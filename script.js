@@ -1,6 +1,8 @@
 'use strict';
 const BUSINESS_EMAIL = 'gpsunited@outlook.com.au';
 const WHATSAPP_NUMBER = '61424407607';
+const EMAIL_ENDPOINT = `https://formsubmit.co/ajax/${BUSINESS_EMAIL}`;
+let sendingEmail = false;
 const form = document.getElementById('quoteForm');
 const tabs = [...document.querySelectorAll('.tab-btn')];
 function setInstallation(tab) {
@@ -43,18 +45,79 @@ function validate() {
   if (firstInvalid) firstInvalid.focus();
   return !firstInvalid;
 }
-form.addEventListener('submit', event => {
+form.addEventListener('submit', async event => {
   event.preventDefault();
+  if (sendingEmail) return;
+  const status = document.getElementById('sendStatus');
+  const fallback = document.getElementById('messageFallback');
+  status.textContent = '';
+  status.className = '';
+  fallback.hidden = true;
   if (!validate()) return;
   const channel = event.submitter?.dataset.channel || 'email';
   const message = `Hello, I would like an eSpring water purifier quote.\n\nFull name: ${value('fullName')}\nEmail: ${value('email')}\nPhone: ${value('phone')}\nInstallation: ${value('installationValue')}\nPreferred contact: ${value('preferredContactValue')}\nSubject: ${value('subject')}\n\nComment:\n${value('comment') || 'No additional comments.'}`;
-  const url = channel === 'whatsapp'
-    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
-    : `mailto:${BUSINESS_EMAIL}?subject=${encodeURIComponent(value('subject'))}&body=${encodeURIComponent(message)}`;
-  const fallback = document.getElementById('messageFallback');
-  fallback.href = url;
-  fallback.hidden = false;
-  document.getElementById('sendStatus').textContent = `Your message is ready. Complete sending in ${channel === 'whatsapp' ? 'WhatsApp' : 'your email app'}. It has not been sent by this website.`;
-  if (channel === 'whatsapp') window.open(url, '_blank', 'noopener,noreferrer');
-  else window.location.href = url;
+  if (channel === 'whatsapp') {
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    fallback.href = url;
+    fallback.hidden = false;
+    status.textContent = 'Your message is ready. Complete sending in WhatsApp. It has not been sent by this website.';
+    window.open(url, '_blank', 'noopener,noreferrer');
+    return;
+  }
+  if (value('website')) return;
+  if (!['https:', 'http:'].includes(window.location.protocol)) {
+    status.textContent = 'Please open the published website to submit your enquiry. Email submission is not available from a downloaded file.';
+    status.className = 'send-error';
+    return;
+  }
+  const payload = {
+    name: value('fullName'), email: value('email'), phone: value('phone'),
+    installation: value('installationValue'), preferredContact: value('preferredContactValue'),
+    subject: value('subject'), comment: value('comment') || 'No additional comments.',
+    _subject: `eSpring enquiry: ${value('subject')}`,
+    _replyto: value('email'), _template: 'table', _captcha: 'false', _honey: ''
+  };
+  const controls = [...form.querySelectorAll('input, textarea, button'), ...tabs, ...choices];
+  const originalDisabled = controls.map(control => control.disabled);
+  const emailButton = form.querySelector('.email-send');
+  const originalLabel = emailButton.textContent;
+  sendingEmail = true;
+  controls.forEach(control => { control.disabled = true; });
+  form.setAttribute('aria-busy', 'true');
+  emailButton.textContent = 'Submitting…';
+  status.textContent = 'Submitting your enquiry…';
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 25000);
+  try {
+    const response = await fetch(EMAIL_ENDPOINT, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload), signal: controller.signal
+    });
+    const result = await response.json();
+    const activationNeeded = /activat|confirm.*email|verify.*email/i.test(String(result.message || ''));
+    if (activationNeeded) {
+      status.className = 'send-error';
+      status.textContent = 'Email enquiries are awaiting activation by the website owner. Your submission is not yet confirmed. Please use WhatsApp or call 0424 407 607 for now.';
+    } else if (response.ok && (result.success === true || result.success === 'true')) {
+      status.className = 'send-success';
+      status.textContent = 'Thank you for submitting your enquiry. We’ll contact you shortly.';
+      form.reset();
+      setInstallation(tabs[0]);
+      chooseContact(choices[0]);
+    } else {
+      throw new Error('Submission was not accepted');
+    }
+  } catch (error) {
+    status.className = 'send-error';
+    status.textContent = error.name === 'AbortError'
+      ? 'The request timed out, so we could not confirm your submission. Your details are still here. Please try again later or use WhatsApp.'
+      : 'We could not confirm your submission. Your details are still here. Please try again later, use WhatsApp, or call 0424 407 607.';
+  } finally {
+    clearTimeout(timeout);
+    sendingEmail = false;
+    controls.forEach((control, index) => { control.disabled = originalDisabled[index]; });
+    form.setAttribute('aria-busy', 'false');
+    emailButton.textContent = originalLabel;
+    status.focus();
+  }
 });

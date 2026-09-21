@@ -158,6 +158,7 @@
       </div>
 
       <form class="quote-form" id="quoteForm" novalidate>
+        <div class="spam-trap" aria-hidden="true"><label for="website">Leave this field empty</label><input type="text" id="website" name="_honey" tabindex="-1" autocomplete="off"></div>
         <input type="hidden" name="installation" id="installationValue" value="Above the sink">
         <input type="hidden" name="preferredContact" id="preferredContactValue" value="Email">
         <div class="field-row">
@@ -202,11 +203,11 @@
         </div>
         <p class="required-note">We'll use your selected installation option and preferred contact method from the summary above — no need to repeat them here.</p>
         <div class="send-actions">
-          <button type="submit" class="submit-btn email-send" data-channel="email">Request via Email</button>
+          <button type="submit" class="submit-btn email-send" data-channel="email">Submit enquiry by Email</button>
           <button type="submit" class="submit-btn whatsapp-send" data-channel="whatsapp">Request via WhatsApp</button>
         </div>
-        <p class="form-note">Name, email, phone and subject are required. Your chosen app opens with a prepared message. Review it and press Send there to complete your request. This website does not store your details.</p>
-        <p id="sendStatus" role="status" aria-live="polite"></p>
+        <p class="form-note">Name, email, phone and subject are required. Email enquiries are submitted here through FormSubmit so we can reply to you. WhatsApp opens a prepared message for you to review and send.</p>
+        <p id="sendStatus" role="status" aria-live="polite" tabindex="-1"></p>
         <a id="messageFallback" hidden target="_blank" rel="noopener noreferrer">Open prepared message again</a>
         <noscript>Please enable JavaScript to use this form, or email gpsunited@outlook.com.au or call 0424 407 607.</noscript>
       </form>
