@@ -1,5 +1,5 @@
 'use strict';
-const BUSINESS_EMAIL = 'gpsunited@outlook.com.au';
+const BUSINESS_EMAIL = 'gpsunited@outlook.com';
 const WHATSAPP_NUMBER = '61424407607';
 const EMAIL_ENDPOINT = `https://formsubmit.co/ajax/${BUSINESS_EMAIL}`;
 let sendingEmail = false;

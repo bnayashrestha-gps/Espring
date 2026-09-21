@@ -17,7 +17,7 @@ Email submission uses FormSubmit (https://formsubmit.co/). No customer email app
 
 1. Upload the files to GitHub Pages and open your live website.
 2. Send a test enquiry using your own contact details and the Email button.
-3. Check gpsunited@outlook.com.au, including Junk/Spam, for a FormSubmit confirmation email and click its activation link.
+3. Check gpsunited@outlook.com, including Junk/Spam, for a FormSubmit confirmation email and click its activation link.
 4. Return to the live website, submit a second test and confirm that the full enquiry arrives in your inbox. Do not assume the initial activation test was delivered.
 5. Complete this setup before sharing the site with customers. A changed domain or email destination may require activation again.
 
@@ -25,7 +25,7 @@ Only the mailbox owner can complete the activation. This ZIP does not mean your 
 
 ## Quote delivery
 
-- Email: gpsunited@outlook.com.au, matching the supplied flyer. The reference page had inconsistent .com/.com.au addresses; this version uses .com.au consistently.
+- Email: gpsunited@outlook.com, as confirmed by the owner. The form and website contact links use this corrected address. The original flyer image still has the old printed address; its artwork has not been edited.
 - WhatsApp: +61 424 407 607. The business number must have an active WhatsApp account; account availability has not been verified.
 - Full name, email, phone and subject are required. Comment is optional, as on the reference site.
 - Email submits directly through FormSubmit and shows: “Thank you for submitting your enquiry. We’ll contact you shortly.” Customers remain on the website.
