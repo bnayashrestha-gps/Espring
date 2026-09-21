@@ -4,6 +4,14 @@ const WHATSAPP_NUMBER = '61424407607';
 const EMAIL_ENDPOINT = `https://formsubmit.co/ajax/${BUSINESS_EMAIL}`;
 let sendingEmail = false;
 const form = document.getElementById('quoteForm');
+const thankYouDialog = document.getElementById('thankYouDialog');
+thankYouDialog.addEventListener('close', () => form.querySelector('.email-send').focus());
+thankYouDialog.addEventListener('click', event => {
+  if (event.target === thankYouDialog) {
+    const bounds = thankYouDialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) thankYouDialog.close();
+  }
+});
 const tabs = [...document.querySelectorAll('.tab-btn')];
 function setInstallation(tab) {
   tabs.forEach(button => {
@@ -88,6 +96,7 @@ form.addEventListener('submit', async event => {
   status.textContent = 'Submitting your enquiry…';
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25000);
+  let submissionAccepted = false;
   try {
     const response = await fetch(EMAIL_ENDPOINT, {
       method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -100,7 +109,8 @@ form.addEventListener('submit', async event => {
       status.textContent = 'Email enquiries are awaiting activation by the website owner. Your submission is not yet confirmed. Please use WhatsApp or call 0424 407 607 for now.';
     } else if (response.ok && (result.success === true || result.success === 'true')) {
       status.className = 'send-success';
-      status.textContent = 'Thank you for submitting your enquiry. We’ll contact you shortly.';
+      status.textContent = 'Thank you for submitting your enquiry. We will get back to you shortly.';
+      submissionAccepted = true;
       form.reset();
       setInstallation(tabs[0]);
       chooseContact(choices[0]);
@@ -118,6 +128,12 @@ form.addEventListener('submit', async event => {
     controls.forEach((control, index) => { control.disabled = originalDisabled[index]; });
     form.setAttribute('aria-busy', 'false');
     emailButton.textContent = originalLabel;
-    status.focus();
+    if (submissionAccepted && typeof thankYouDialog.showModal === 'function') {
+      status.textContent = '';
+      status.className = '';
+      thankYouDialog.showModal();
+    } else {
+      status.focus();
+    }
   }
 });

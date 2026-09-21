@@ -25,10 +25,10 @@ Only the mailbox owner can complete the activation. This ZIP does not mean your 
 
 ## Quote delivery
 
-- Email: gpsunited@outlook.com, as confirmed by the owner. The form and website contact links use this corrected address. The original flyer image still has the old printed address; its artwork has not been edited.
+- Email: gpsunited@outlook.com, as confirmed by the owner. The form, website contact links and flyer use this corrected address.
 - WhatsApp: +61 424 407 607. The business number must have an active WhatsApp account; account availability has not been verified.
 - Full name, email, phone and subject are required. Comment is optional, as on the reference site.
-- Email submits directly through FormSubmit and shows: “Thank you for submitting your enquiry. We’ll contact you shortly.” Customers remain on the website.
+- Email submits directly through FormSubmit. After successful acceptance, a pop-up displays only a green success tick and: “Thank you for submitting your enquiry. We will get back to you shortly.” Customers can dismiss it by clicking the tick, clicking outside the pop-up, or pressing Escape. Failed submissions do not display this pop-up.
 - WhatsApp continues to open a prepared message; customers must press Send in WhatsApp. A fallback link appears after validation. WhatsApp requires the app or WhatsApp Web sign-in.
 - FormSubmit receives the customer's details to process email delivery. The website has no enquiry database. FormSubmit documents a 30-day submissions archive: https://formsubmit.co/documentation.
 - Duplicate clicks are blocked while email is sending. Failed requests retain the entered details. A timeout cannot rule out service receipt; retrying may produce a duplicate.

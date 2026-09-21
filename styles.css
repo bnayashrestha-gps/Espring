@@ -264,7 +264,7 @@
   }
 
   /* Installation photos are exact windows onto the original flyer. */
-  .installation-photo{width:100%;aspect-ratio:480/280;border-radius:14px;background-image:url('espring-flyer.jpeg');background-repeat:no-repeat;background-size:213.333333% 548.571429%;}
+  .installation-photo{width:100%;aspect-ratio:480/280;border-radius:14px;background-image:url('espring-flyer.jpeg?v=corrected-com-4');background-repeat:no-repeat;background-size:213.333333% 548.571429%;}
   .above-photo{background-position:5.514706% 78.343949%;}
   .below-photo{background-position:94.301471% 78.343949%;}
   .send-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
@@ -281,6 +281,23 @@
   #sendStatus.send-success{padding:18px;border:1px solid #a8d5b4;border-radius:12px;background:#eef9f1;color:#175332;font-size:16px;font-weight:600;}
   #sendStatus.send-error{padding:16px;border:1px solid #ebc1b4;border-radius:12px;background:#fff5ef;color:#863021;}
   button:disabled{opacity:.65;cursor:wait;}
+  .thank-you-dialog{width:min(480px,calc(100% - 32px));max-height:calc(100dvh - 48px);overflow:auto;border:0;border-radius:22px;padding:36px 28px;background:var(--white);color:var(--ink);text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.25);}
+  .thank-you-dialog::backdrop{background:rgba(6,30,48,.65);}
+  .thank-you-dialog p{font-size:clamp(18px,4vw,22px);line-height:1.6;font-weight:500;margin:0;color:var(--deep);}
+  .thank-you-dialog .thank-you-icon{width:76px;height:76px;display:grid;place-items:center;margin:0 auto 24px;border:2px solid #72be90;border-radius:50%;background:#eaf6ed;color:#21834c;cursor:pointer;}
+  .thank-you-dialog form{margin:0;}
+  .thank-you-dialog[open]{animation:success-appear .42s cubic-bezier(.16,1,.3,1) both;}
+  .thank-you-dialog[open]::backdrop{animation:success-backdrop .3s ease-out both;}
+  .thank-you-dialog[open] .thank-you-icon{animation:success-icon .55s cubic-bezier(.16,1,.3,1) .1s both;}
+  .thank-you-dialog[open] .thank-you-icon path{stroke-dasharray:40;stroke-dashoffset:40;animation:success-check .4s ease-out .32s forwards;}
+  .thank-you-dialog[open] #thankYouMessage{animation:success-text .35s ease-out .22s both;}
+  .thank-you-icon:hover{background:#d9f0e1;}
+  @keyframes success-appear{from{opacity:0;transform:translateY(18px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes success-backdrop{from{opacity:0}to{opacity:1}}
+  @keyframes success-icon{0%{opacity:0;transform:scale(.65)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+  @keyframes success-check{to{stroke-dashoffset:0}}
+  @keyframes success-text{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+  @media(prefers-reduced-motion:reduce){.thank-you-dialog[open],.thank-you-dialog[open]::backdrop,.thank-you-dialog[open] .thank-you-icon,.thank-you-dialog[open] .thank-you-icon path,.thank-you-dialog[open] #thankYouMessage{animation:none;}.thank-you-dialog[open] .thank-you-icon path{stroke-dashoffset:0;}}
   @media(max-width:860px){.hero .hero-art{height:auto;}.hero-inner{padding-bottom:0;}}
   @media(max-width:480px){.send-actions,.strip-inner{grid-template-columns:1fr;}.install-tabs{flex-wrap:wrap;}form.quote-form{padding:22px;}.wrap{padding-inline:18px;}.nav-inner{padding-inline:18px;}}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none!important;}}
